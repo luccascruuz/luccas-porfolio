@@ -1,0 +1,152 @@
+* {
+    font-size: 16px;
+    font-family: monospace;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: #ffd99b;
+}
+
+dialog {
+    border-radius: 1rem;
+    width: 50%;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+button {
+    width: 100%;
+    border-radius: 0.2rem;
+    transition: all .2s ease;
+}
+
+button:hover {
+    cursor: pointer;
+    box-shadow: 3px 3px 6px #000;
+}
+
+.home-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 1.5rem;
+}
+
+.container-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+.image-pixel-me {
+    width: 125px;
+    height: 125px;
+}
+
+.container-info {
+    background: white;
+    padding: 2rem 2rem;
+    border-radius: 1rem;
+    border: 4px solid #000;
+}
+
+.container-button {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+
+    margin-top: 1.5rem;
+}
+
+.container-button-close-modal-experience {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+.button-close-modal-experience {
+    width: 5%;
+    align-items: center;
+}
+
+.container-button-close-modal-projects {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+.button-close-modal-projects {
+    width: 5%;
+    align-items: center;
+}
+
+
+.container-experience {
+    padding: 1rem;
+}
+
+.title-experience {
+    text-align: center;
+}
+.title-company-experience:hover {
+    text-decoration: underline;
+}
+
+.container-projects {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+.description-project{
+    text-align: center;
+}
+.title-project-github {
+    text-align: center;
+}
+.project-github {
+    height: 100%;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 2px solid #000;
+    transition: all .3s ease;
+}
+
+.project-github:hover {
+    box-shadow: 6px 6px 9px #000;
+}
+
+@media (max-width: 991px) {
+    dialog {
+        width: 100%;
+    }
+
+    .image-pixel-me {
+        width: 75px;
+        height: 75px;
+    }
+    .container-button {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .container-projects {
+        grid-template-columns: 1fr;
+    }
+
+    .button-close-modal-experience {
+        width: 10%;
+    }
+    .button-close-modal-projects {
+        width: 10%;
+    }
+}

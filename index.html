@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="src/css/style.css">
+    <link rel="shortcut icon" href="src/image/pixelArtMe.ico" type="image/x-icon">
+    <title>Luccas</title>
+</head>
+
+<body>
+    <section class="home-section">
+        <div class="container-info">
+            <div class="container-title">
+                <h1>
+                    Software Engineer
+                </h1>
+                <img src="src/image/pixelArtMe.png" class="image-pixel-me" />
+            </div>
+            <p><b>Name:</b> Luccas Ribeiro Cruz</p>
+            <p><b>Skills:</b> React, Nextjs,HTML, CSS, JavaScript, TypeScript, Node, JAVA</p>
+            <p><b>Education:</b> Bachelor’s in Information Systems</p>
+            <div class="container-button">
+                <a href="https://github.com/luccascruuz" target="_blank">
+                    <button>
+                        GitHub
+                    </button>
+                </a>
+                <a href="https://www.linkedin.com/in/luccas-ribeiro-cruz/" target="_blank">
+                    <button>
+                        Linkedin
+                    </button>
+                </a>
+                <button id="buttonExperience">Experiences</button>
+                <button id="buttonPrjects">Projects</button>
+            </div>
+
+            <dialog id="dialogModalProjects">
+                <div class="container-button-close-modal-projects">
+                    <button class="button-close-modal-projects" aria-label="Close modal projects"
+                        id="buttonProjectsCloseX">✖</button>
+                </div>
+                <h1 class="title-experience">Projects</h1>
+                <div class="container-projects">
+                    <a href="https://github.com/luccascruuz/dashboard-lagarto-covid" target="_blank">
+                        <div class="project-github">
+                            <h2 class="title-project-github">Dashboard Lagarto Covid</h2>
+                            <p class="description-project">A Dashboard displaying information about
+                                COVID-19 in the city of Lagarto-SE. Using the API also created by
+                                me to collect this data. Built in Next.js, the data is presented
+                                on the Dashboard in graphs and signs; the information is updated daily.</p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/luccascruuz/APICovidLagartoSE" target="_blank">
+                        <div class="project-github">
+                            <h2 class="title-project-github">API Covid Lagarto</h2>
+                            <p class="description-project">
+                                API with data about COVID-19 cases in the city of Lagarto-SE,
+                                using an AWS Lambda to collect the data daily. This API feeds
+                                the MongoDB database, and the necessary data is filtered to be
+                                displayed on the Dashboard.
+                            </p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/luccascruuz/artificial-artistry" target="_blank">
+                        <div class="project-github">
+                            <h2 class="title-project-github">Artificial Artistry</h2>
+                            <p class="description-project">Telegram bot that generates images from
+                                any text the user sends, using the OpenAI API to create the images
+                                and send them through Telegram.
+                            </p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/luccascruuz/crud-java-spring" target="_blank">
+                        <div class="project-github">
+                            <h2 class="title-project-github">CRUD JAVA+SPRINGBOOT</h2>
+                            <p class="description-project">Creation of a CRUD that manages product data in
+                                a PostgreSQL database, using JAVA and SpringBoot, including some examples
+                                of unit tests in the controllers.
+                            </p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/luccascruuz/portfolio-spider-man" target="_blank">
+                        <div class="project-github">
+                            <h2 class="title-project-github">Spider-Man Portfolio</h2>
+                            <p class="description-project">Portfolio created solely with HTML, CSS, and
+                                JavaScript about Spider-Man. Showcasing some effects that we can create
+                                using only HTML and CSS, along with some JavaScript techniques and patterns.</p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/luccascruuz/create-csv-info-restaurants" target="_blank">
+                        <div class="project-github">
+                            <h2 class="title-project-github">CSV Creator with information about restaurants in the
+                                region</h2>
+                            <p class="description-project">
+                                This system generates a CSV with information about
+                                restaurants in the area using the Google Maps API and
+                                creates a message using the OpenAI API for a potential
+                                job opportunity.
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </dialog>
+
+
+            <dialog id="dialogModalExperience">
+                <div class="container-button-close-modal-experience">
+                    <button class="button-close-modal-experience" aria-label="Close modal experience"
+                        id="buttonExperienceCloseX">✖</button>
+                </div>
+                <h1 class="title-experience">Experiences</h1>
+                <div class="container-experience">
+                    <div>
+                        <a class="title-company-experience" href="https://www.stone.com.br/" target="_blank">
+                            <h2>
+                                Stone — Software Engineer
+                            </h2>
+                        </a>
+                        <p>Since March 2022</p>
+                        <ul>
+                            <li>Developing web solutions for a fintech company</li>
+                            <li>Frontend project development using React, Next.js, Redux, Context, Styled
+                                Components and TypeScript</li>
+                            <li>Version control with Git and Github</li>
+                            <li>Code review</li>
+                            <li>Unit testing with Jest</li>
+                            <li>Agile development approach</li>
+                        </ul>
+                    </div>
+                    <hr>
+                    <div>
+                        <a class="title-company-experience" href="https://querodelivery.com/" target="_blank">
+                            <h2>
+                                Quero Delivery — Software Engineer
+                            </h2>
+                        </a>
+                        <p>September 2020 - February 2022</p>
+                        <ul>
+                            <li>Worked on web solutions for a food delivery app</li>
+                            <li>Frontend project development using React, Next.js, Redux, Context, Styled
+                                Components and TypeScript</li>
+                            <li>Version control with Git and Github</li>
+                            <li>Code review</li>
+                            <li>Unit testing with Jest</li>
+                            <li>Agile development using Scrum and Jira</li>
+                        </ul>
+                    </div>
+                    <hr>
+                    <div>
+                        <a class="title-company-experience" href="https://sergipetec.org.br/" target="_blank">
+                            <h2>
+                                SergipeTec — Software Developer
+                            </h2>
+                        </a>
+                        <p>July 2020 - September 2020</p>
+                        <ul>
+                            <li>Contributed to the migration of the State of Sergipe’s treasury system to
+                                Java using Spring Boot framework</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </dialog>
+        </div>
+    </section>
+
+    <script src="src/js/index.js"></script>
+</body>
+
+</html>
