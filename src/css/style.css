@@ -10,6 +10,7 @@ body {
     padding: 0;
     height: 100vh;
     background: #ffd99b;
+    overflow: hidden;
 }
 
 dialog {
@@ -40,10 +41,12 @@ button:hover {
 
 .home-section {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
     padding: 1.5rem;
+    gap: 2rem;
 }
 
 .container-title {
@@ -59,7 +62,7 @@ button:hover {
 
 .container-info {
     background: white;
-    padding: 2rem 2rem;
+    padding: 2rem 1.5rem;
     border-radius: 1rem;
     border: 4px solid #000;
 }
@@ -125,6 +128,24 @@ button:hover {
 
 .project-github:hover {
     box-shadow: 6px 6px 9px #000;
+}
+
+.flag-from-brazil {
+    /* position: absolute; */
+    width: 70px;
+    height: 50px;
+    /* z-index: 99999999;
+    top: 2rem;
+    right: 2rem; */
+}
+
+.flag-from-usa {
+    /* position: absolute; */
+    width: 70px;
+    height: 50px;
+    /* z-index: 99999999;
+    top: 50rem;
+    right: 2rem; */
 }
 
 @media (max-width: 991px) {

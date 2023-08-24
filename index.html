@@ -10,7 +10,10 @@
 </head>
 
 <body>
-    <section class="home-section">
+    <section class="home-section" id="en-us">
+        <a href="#pt-br">
+            <img class="flag-from-brazil" src="./src/image/Flag_of_Brazil.svg.png" alt="Flag from brazil">
+        </a>
         <div class="container-info">
             <div class="container-title">
                 <h1>
@@ -163,6 +166,175 @@
                         <ul>
                             <li>Contributed to the migration of the State of Sergipe’s treasury system to
                                 Java using Spring Boot framework</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </dialog>
+        </div>
+    </section>
+
+    <section class="home-section" id="pt-br">
+        <a href="#en-us">
+            <img class="flag-from-usa" src="./src/image/Flag_of_the_United_States.svg.png" alt="Flag from brazil">
+        </a>
+        <div class="container-info">
+            <div class="container-title">
+                <h1>
+                    Engenheiro de Software
+                </h1>
+                <img src="src/image/pixelArtMe.png" class="image-pixel-me" />
+            </div>
+            <p><b>Nome:</b> Luccas Ribeiro Cruz</p>
+            <p><b>Habilidades:</b> React, Nextjs,HTML, CSS, JavaScript, TypeScript, Node, JAVA</p>
+            <p><b>Educação:</b> Bacharel em Sistemas de Informação</p>
+            <div class="container-button">
+                <a href="https://github.com/luccascruuz" target="_blank">
+                    <button>
+                        GitHub
+                    </button>
+                </a>
+                <a href="https://www.linkedin.com/in/luccas-ribeiro-cruz/" target="_blank">
+                    <button>
+                        Linkedin
+                    </button>
+                </a>
+                <button id="buttonExperiencePtBr">Experiências</button>
+                <button id="buttonPrjectsPtBr">Projetos</button>
+            </div>
+
+            <dialog id="dialogModalProjectsPtBr">
+                <div class="container-button-close-modal-projects">
+                    <button class="button-close-modal-projects" aria-label="Close modal projects"
+                        id="buttonProjectsPtBrCloseX">✖</button>
+                </div>
+                <h1 class="title-experience">Projetos</h1>
+                <div class="container-projects">
+                    <a href="https://github.com/luccascruuz/dashboard-lagarto-covid" target="_blank">
+                        <div class="project-github">
+                            <h2 class="title-project-github">Dashboard Lagarto Covid</h2>
+                            <p class="description-project">Um Painel de Controle exibindo
+                                informações sobre a COVID-19 na cidade de Lagarto-SE. Utilizando
+                                a API também criada por mim para coletar esses dados. Construído
+                                em Next.js, os dados são apresentados no Painel em gráficos e sinais;
+                                as informações são atualizadas diariamente.</p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/luccascruuz/APICovidLagartoSE" target="_blank">
+                        <div class="project-github">
+                            <h2 class="title-project-github">API Covid Lagarto</h2>
+                            <p class="description-project">
+                                API com dados sobre casos de COVID-19 na
+                                cidade de Lagarto-SE, utilizando um AWS Lambda
+                                para coletar os dados diariamente. Essa API alimenta
+                                o banco de dados MongoDB, e os dados necessários são
+                                filtrados para serem exibidos no Painel de Controle.
+                            </p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/luccascruuz/artificial-artistry" target="_blank">
+                        <div class="project-github">
+                            <h2 class="title-project-github">Artificial Artistry</h2>
+                            <p class="description-project">Bot do Telegram que gera imagens a partir de
+                                qualquer texto que o usuário envia, utilizando a API da OpenAI para
+                                criar as imagens e enviá-las pelo Telegram.
+                            </p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/luccascruuz/crud-java-spring" target="_blank">
+                        <div class="project-github">
+                            <h2 class="title-project-github">CRUD JAVA+SPRINGBOOT</h2>
+                            <p class="description-project">Criação de um CRUD que gerencia
+                                dados de produtos em um banco de dados PostgreSQL, utilizando
+                                JAVA e SpringBoot, incluindo alguns exemplos de testes unitários
+                                nos controladores.
+                            </p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/luccascruuz/portfolio-spider-man" target="_blank">
+                        <div class="project-github">
+                            <h2 class="title-project-github">Spider-Man Portfolio</h2>
+                            <p class="description-project">Portfólio criado exclusivamente
+                                com HTML, CSS e JavaScript sobre o Homem-Aranha. Demonstrando
+                                alguns efeitos que podemos criar usando apenas HTML e CSS,
+                                juntamente com algumas técnicas e padrões de JavaScript.</p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/luccascruuz/create-csv-info-restaurants" target="_blank">
+                        <div class="project-github">
+                            <h2 class="title-project-github">Criador de CSV com informações sobre
+                                restaurantes na região</h2>
+                            <p class="description-project">
+                                Este sistema gera um CSV com informações sobre
+                                restaurantes na área usando a API do Google Maps
+                                e cria uma mensagem utilizando a API da OpenAI para
+                                uma possível oportunidade de emprego.
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </dialog>
+
+
+            <dialog id="dialogModalExperiencePtBr">
+                <div class="container-button-close-modal-experience">
+                    <button class="button-close-modal-experience" aria-label="Close modal experience"
+                        id="buttonExperiencePtBrCloseX">✖</button>
+                </div>
+                <h1 class="title-experience">Experiências</h1>
+                <div class="container-experience">
+                    <div>
+                        <a class="title-company-experience" href="https://www.stone.com.br/" target="_blank">
+                            <h2>
+                                Stone — Software Engineer
+                            </h2>
+                        </a>
+                        <p>Desde Março de 2022</p>
+                        <ul>
+                            <li>Desenvolvimento de soluções web para fintech</li>
+                            <li>Desenvolvimento de projetos frontend web utilizando
+                                Reactjs, Nextjs, Redux, Context, Styled Components e Typescript</li>
+                            <li>Uso de versionamento de arquivos com Git e Github</li>
+                            <li>Revisão de código</li>
+                            <li>Testes unitários com jest</li>
+                            <li>Desenvolvimento ágil</li>
+                        </ul>
+                    </div>
+                    <hr>
+                    <div>
+                        <a class="title-company-experience" href="https://querodelivery.com/" target="_blank">
+                            <h2>
+                                Quero Delivery — Software Engineer
+                            </h2>
+                        </a>
+                        <p>Setembro de 2020 - Fevereiro de 2022</p>
+                        <ul>
+                            <li>Desenvolvimento de soluções web para app delivery</li>
+                            <li>Desenvolvimento de projetos frontend web utilizando Reactjs,
+                                Nextjs, Redux, Context, Styled Components e Typescript</li>
+                            <li>Uso de versionamento de arquivos com Git e Github</li>
+                            <li>Revisão de código</li>
+                            <li>Testes unitários com Jest</li>
+                            <li>Desenvolvimento ágil com Scrum utilizando o jira</li>
+                        </ul>
+                    </div>
+                    <hr>
+                    <div>
+                        <a class="title-company-experience" href="https://sergipetec.org.br/" target="_blank">
+                            <h2>
+                                SergipeTec — Software Developer
+                            </h2>
+                        </a>
+                        <p>Julho de 2020 - Stembro de 2020</p>
+                        <ul>
+                            <li>Trabalhei na migração do sistema da
+                                secretaria da fazenda do estado de Sergipe
+                                para Java utilizando Spring Boot</li>
 
                         </ul>
                     </div>
