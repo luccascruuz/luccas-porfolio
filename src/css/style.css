@@ -30,6 +30,7 @@ button {
     width: 100%;
     border-radius: 0.2rem;
     transition: all .2s ease;
+    text-align: center;
 }
 
 button:hover {
