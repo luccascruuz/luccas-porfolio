@@ -78,7 +78,7 @@ button:hover {
     justify-content: right;
 }
 .button-close-modal-experience {
-    width: 5%;
+    width: 2rem;
     align-items: center;
 }
 
@@ -88,7 +88,7 @@ button:hover {
     justify-content: right;
 }
 .button-close-modal-projects {
-    width: 5%;
+    width: 2rem;
     align-items: center;
 }
 
@@ -151,10 +151,4 @@ button:hover {
         grid-template-columns: 1fr;
     }
 
-    .button-close-modal-experience {
-        width: 8%;
-    }
-    .button-close-modal-projects {
-        width: 8%;
-    }
 }
