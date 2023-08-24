@@ -19,7 +19,6 @@ dialog {
 
 a {
     text-decoration: none;
-    color: #000;
 }
 
 h1 {
@@ -30,6 +29,7 @@ button {
     width: 100%;
     border-radius: 0.2rem;
     transition: all .2s ease;
+    color: #000;
 }
 
 button:hover {
