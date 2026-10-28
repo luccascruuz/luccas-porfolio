@@ -30,6 +30,7 @@ A página esconde algumas surpresas. Tente achar no [site](https://luccas-porfol
 - 👀 Os olhos do pixel art seguem o mouse, pixel por pixel, dentro dos óculos escuros.
 - 😉 De tempos em tempos ele pisca.
 - 💬 Clique no pixel art e ele fala alguma coisa, com uma mensagem nova a cada clique.
+- ⚽ Clique em qualquer lugar da página pra adicionar uma bola que quica nas bordas da tela, no card e na bandeira (até 50). Em português é uma bola de futebol, em inglês uma de futebol americano.
 - 🧑‍💻 Abra o console do DevTools e o pixel art aparece desenhado lá, pixel por pixel.
 
 ![Easter egg do balão de fala](docs/easter-egg.png)

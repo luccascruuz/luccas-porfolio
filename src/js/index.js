@@ -363,3 +363,259 @@ function printConsoleGreeting() {
     image.src = "src/image/pixelArtMe.png"
 }
 printConsoleGreeting()
+
+const BALL_SPRITE_SIZE = 24 // The ball is drawn this small, pixel by pixel, and scaled up without smoothing
+const BALL_SPEED = 220 // Pixels per second
+
+const ballCanvas = document.querySelector("#backgroundBall")
+const ballContext = ballCanvas.getContext("2d")
+const ballSprite = document.createElement("canvas")
+ballSprite.width = ballSprite.height = BALL_SPRITE_SIZE
+const ballSpriteContext = ballSprite.getContext("2d")
+const ballSpriteImage = ballSpriteContext.createImageData(BALL_SPRITE_SIZE, BALL_SPRITE_SIZE)
+
+const ballObstacles = [
+    { element: document.querySelector(".container-info"), cornerRadius: 16 },
+    { element: flagLanguage, cornerRadius: 0 },
+]
+
+const BALL_LIMIT = 50
+const balls = []
+let ballSize = 48
+
+function getBallRadius() {
+    return ballSize * 0.47
+}
+
+function resizeBallCanvas() {
+    const ratio = window.devicePixelRatio || 1
+    ballCanvas.width = ballCanvas.clientWidth * ratio
+    ballCanvas.height = ballCanvas.clientHeight * ratio
+    ballContext.setTransform(ratio, 0, 0, ratio, 0, 0)
+    ballContext.imageSmoothingEnabled = false
+    ballSize = ballCanvas.clientWidth < 600 ? 36 : 48
+}
+
+const BALL_COLORS = {
+    outline: [17, 17, 17],
+    white: [255, 255, 255],
+    shadow: [200, 200, 200],
+    patch: [17, 17, 17],
+    seam: [150, 150, 150],
+    leather: [139, 69, 19],
+    leatherLight: [176, 98, 44],
+    leatherDark: [98, 45, 12],
+    leatherOutline: [52, 24, 6],
+}
+
+function isInsideRegularPolygon(x, y, centerX, centerY, radius, sides, rotation) {
+    const sector = (Math.PI * 2) / sides
+    const angle = Math.atan2(y - centerY, x - centerX) - rotation
+    const angleInSector = ((angle % sector) + sector) % sector - sector / 2
+    return Math.hypot(x - centerX, y - centerY) * Math.cos(angleInSector) <= radius * Math.cos(Math.PI / sides)
+}
+
+function distanceToSegment(x, y, startX, startY, endX, endY) {
+    const lengthSquared = (endX - startX) ** 2 + (endY - startY) ** 2
+    const progress = Math.max(0, Math.min(1, ((x - startX) * (endX - startX) + (y - startY) * (endY - startY)) / lengthSquared))
+    return Math.hypot(x - (startX + progress * (endX - startX)), y - (startY + progress * (endY - startY)))
+}
+
+function getSoccerBallPixel(x, y, u, v) {
+    const radius = BALL_SPRITE_SIZE / 2 - 0.5
+    const distance = Math.hypot(x, y)
+
+    if (distance > radius) return null
+    if (distance > radius - 1.2) return BALL_COLORS.outline
+
+    const patchRadius = radius * 0.3
+    if (isInsideRegularPolygon(u, v, 0, 0, patchRadius, 5, -Math.PI / 2)) return BALL_COLORS.patch
+    for (let patch = 0; patch < 5; patch++) {
+        const angle = Math.PI / 2 + (patch * Math.PI * 2) / 5
+        const patchX = Math.cos(angle) * radius * 0.88
+        const patchY = Math.sin(angle) * radius * 0.88
+        if (isInsideRegularPolygon(u, v, patchX, patchY, patchRadius, 5, angle)) return BALL_COLORS.patch
+
+        const cornerAngle = -Math.PI / 2 + (patch * Math.PI * 2) / 5
+        const cornerX = Math.cos(cornerAngle) * patchRadius
+        const cornerY = Math.sin(cornerAngle) * patchRadius
+        const seamEndX = Math.cos(cornerAngle) * radius * 0.62
+        const seamEndY = Math.sin(cornerAngle) * radius * 0.62
+        if (distanceToSegment(u, v, cornerX, cornerY, seamEndX, seamEndY) < 0.5) return BALL_COLORS.seam
+    }
+
+    if (Math.hypot(x + radius * 0.3, y + radius * 0.3) > radius * 1.05) return BALL_COLORS.shadow
+    return BALL_COLORS.white
+}
+
+function getAmericanFootballPixel(x, y, u, v) {
+    const radiusX = BALL_SPRITE_SIZE / 2 - 0.5
+    const radiusY = radiusX * 0.6
+    const ellipse = (u / radiusX) ** 2 + (v / radiusY) ** 2
+
+    if (ellipse > 1) return null
+    if (ellipse > ((radiusY - 1.2) / radiusY) ** 2) return BALL_COLORS.leatherOutline
+
+    const tipDistance = Math.abs(u) / radiusX
+    if (tipDistance > 0.6 && tipDistance < 0.7) return BALL_COLORS.white
+
+    if (Math.abs(u) < radiusX * 0.32 && Math.abs(v + 0.5) < 0.6) return BALL_COLORS.white
+    for (const stitch of [-0.22, 0, 0.22]) {
+        if (Math.abs(u - stitch * radiusX) < 0.6 && v > -2.5 && v < 1.5) return BALL_COLORS.white
+    }
+
+    const light = (x + y) / (radiusX * 2)
+    if (light < -0.25) return BALL_COLORS.leatherLight
+    if (light > 0.2) return BALL_COLORS.leatherDark
+    return BALL_COLORS.leather
+}
+
+function drawBall(ball) {
+    const getPixel = currentLanguage === "pt" ? getSoccerBallPixel : getAmericanFootballPixel
+    const cos = Math.cos(ball.angle)
+    const sin = Math.sin(ball.angle)
+    const pixels = ballSpriteImage.data
+
+    for (let row = 0; row < BALL_SPRITE_SIZE; row++) {
+        for (let column = 0; column < BALL_SPRITE_SIZE; column++) {
+            const x = column + 0.5 - BALL_SPRITE_SIZE / 2
+            const y = row + 0.5 - BALL_SPRITE_SIZE / 2
+            const color = getPixel(x, y, x * cos + y * sin, y * cos - x * sin)
+            const index = (row * BALL_SPRITE_SIZE + column) * 4
+
+            if (color) {
+                pixels[index] = color[0]
+                pixels[index + 1] = color[1]
+                pixels[index + 2] = color[2]
+            }
+            pixels[index + 3] = color ? 255 : 0
+        }
+    }
+    ballSpriteContext.putImageData(ballSpriteImage, 0, 0)
+    ballContext.drawImage(ballSprite, ball.x - ballSize / 2, ball.y - ballSize / 2, ballSize, ballSize)
+}
+
+function bounceOnScreenEdges(ball) {
+    const radius = getBallRadius()
+    const width = ballCanvas.clientWidth
+    const height = ballCanvas.clientHeight
+
+    if (ball.x < radius) {
+        ball.x = radius
+        ball.velocityX = Math.abs(ball.velocityX)
+    } else if (ball.x > width - radius) {
+        ball.x = width - radius
+        ball.velocityX = -Math.abs(ball.velocityX)
+    }
+
+    if (ball.y < radius) {
+        ball.y = radius
+        ball.velocityY = Math.abs(ball.velocityY)
+    } else if (ball.y > height - radius) {
+        ball.y = height - radius
+        ball.velocityY = -Math.abs(ball.velocityY)
+    }
+}
+
+function bounceOnRectangle(ball, rect, cornerRadius) {
+    const radius = getBallRadius()
+    const left = rect.left + cornerRadius
+    const right = rect.right - cornerRadius
+    const top = rect.top + cornerRadius
+    const bottom = rect.bottom - cornerRadius
+
+    const closestX = Math.min(Math.max(ball.x, left), right)
+    const closestY = Math.min(Math.max(ball.y, top), bottom)
+    let normalX = ball.x - closestX
+    let normalY = ball.y - closestY
+    const distance = Math.hypot(normalX, normalY)
+
+    if (distance >= radius + cornerRadius) return
+
+    if (distance > 0) {
+        normalX /= distance
+        normalY /= distance
+        ball.x = closestX + normalX * (radius + cornerRadius)
+        ball.y = closestY + normalY * (radius + cornerRadius)
+    } else {
+        const sides = [
+            { distance: ball.x - rect.left, normalX: -1, normalY: 0 },
+            { distance: rect.right - ball.x, normalX: 1, normalY: 0 },
+            { distance: ball.y - rect.top, normalX: 0, normalY: -1 },
+            { distance: rect.bottom - ball.y, normalX: 0, normalY: 1 },
+        ]
+        const closestSide = sides.reduce((closest, side) => (side.distance < closest.distance ? side : closest))
+        normalX = closestSide.normalX
+        normalY = closestSide.normalY
+        ball.x += normalX * (closestSide.distance + radius)
+        ball.y += normalY * (closestSide.distance + radius)
+    }
+
+    const dot = ball.velocityX * normalX + ball.velocityY * normalY
+    if (dot < 0) {
+        ball.velocityX -= 2 * dot * normalX
+        ball.velocityY -= 2 * dot * normalY
+    }
+}
+
+function updateBallAngle(ball, deltaTime) {
+    if (currentLanguage === "pt") {
+        ball.angle += (ball.velocityX / getBallRadius()) * 0.5 * deltaTime
+        return
+    }
+
+    const targetAngle = Math.atan2(ball.velocityY, ball.velocityX)
+    const difference = Math.atan2(Math.sin(targetAngle - ball.angle), Math.cos(targetAngle - ball.angle))
+    ball.angle += difference * Math.min(1, deltaTime * 8)
+}
+
+let lastBallTime
+
+function updateBalls(time) {
+    const deltaTime = Math.min((time - (lastBallTime ?? time)) / 1000, 1 / 30)
+    lastBallTime = time
+
+    const obstacles = isSwitchingLanguage
+        ? []
+        : ballObstacles.map(({ element, cornerRadius }) => ({ rect: element.getBoundingClientRect(), cornerRadius }))
+
+    ballContext.clearRect(0, 0, ballCanvas.clientWidth, ballCanvas.clientHeight)
+
+    balls.forEach((ball) => {
+        ball.x += ball.velocityX * deltaTime
+        ball.y += ball.velocityY * deltaTime
+        obstacles.forEach(({ rect, cornerRadius }) => bounceOnRectangle(ball, rect, cornerRadius))
+        bounceOnScreenEdges(ball)
+        updateBallAngle(ball, deltaTime)
+        drawBall(ball)
+    })
+
+    requestAnimationFrame(updateBalls)
+}
+
+function addBall(x, y) {
+    if (balls.length >= BALL_LIMIT) return
+
+    const angle = (Math.PI / 6 + Math.random() * (Math.PI / 6)) + Math.floor(Math.random() * 4) * (Math.PI / 2)
+    balls.push({
+        x,
+        y,
+        velocityX: Math.cos(angle) * BALL_SPEED,
+        velocityY: Math.sin(angle) * BALL_SPEED,
+        angle,
+    })
+
+    if (balls.length === 1) requestAnimationFrame(updateBalls)
+}
+
+if (prefersReducedMotion()) {
+    ballCanvas.hidden = true
+} else {
+    resizeBallCanvas()
+    window.addEventListener("resize", resizeBallCanvas)
+
+    document.addEventListener("click", (event) => {
+        if (event.detail === 0 || event.target.closest("dialog")) return
+        addBall(event.clientX, event.clientY)
+    })
+}

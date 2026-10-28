@@ -30,6 +30,7 @@ The page hides a few surprises. Try finding them on the [live site](https://lucc
 - 👀 The pixel art's eyes follow your mouse, moving pixel by pixel inside the sunglasses.
 - 😉 Every few seconds it blinks.
 - 💬 Click the pixel art and it says something, with a new message on each click.
+- ⚽ Click anywhere on the page to add a ball that bounces off the screen edges, the card and the flag (up to 50). It's a soccer ball in Portuguese and an American football in English.
 - 🧑‍💻 Open the DevTools console and the pixel art is drawn there, pixel by pixel.
 
 ![Speech bubble easter egg](docs/easter-egg.png)
