@@ -569,6 +569,30 @@ function updateBallAngle(ball, deltaTime) {
     ball.angle += difference * Math.min(1, deltaTime * 8)
 }
 
+function hasRoomAround(rect) {
+    return rect.left >= ballSize || ballCanvas.clientWidth - rect.right >= ballSize
+}
+
+function isOverlapping(ball, rect, cornerRadius) {
+    const closestX = Math.min(Math.max(ball.x, rect.left + cornerRadius), rect.right - cornerRadius)
+    const closestY = Math.min(Math.max(ball.y, rect.top + cornerRadius), rect.bottom - cornerRadius)
+    return Math.hypot(ball.x - closestX, ball.y - closestY) < getBallRadius() + cornerRadius - 0.5
+}
+
+// A ball in a gap smaller than itself (between the flag and the card) is pushed back and forth forever,
+// so it escapes through the side of the narrowest obstacle
+function escapeIfTrapped(ball, obstacles) {
+    const trappedIn = obstacles
+        .filter(({ rect, cornerRadius }) => isOverlapping(ball, rect, cornerRadius))
+        .sort((first, second) => first.rect.width - second.rect.width)[0]
+    if (!trappedIn) return
+
+    const { rect } = trappedIn
+    const goesLeft = ball.x < (rect.left + rect.right) / 2
+    ball.x = goesLeft ? rect.left - getBallRadius() : rect.right + getBallRadius()
+    ball.velocityX = goesLeft ? -Math.abs(ball.velocityX) : Math.abs(ball.velocityX)
+}
+
 let lastBallTime
 
 function updateBalls(time) {
@@ -577,7 +601,9 @@ function updateBalls(time) {
 
     const obstacles = isSwitchingLanguage
         ? []
-        : ballObstacles.map(({ element, cornerRadius }) => ({ rect: element.getBoundingClientRect(), cornerRadius }))
+        : ballObstacles
+            .map(({ element, cornerRadius }) => ({ rect: element.getBoundingClientRect(), cornerRadius }))
+            .filter(({ rect }) => hasRoomAround(rect))
 
     ballContext.clearRect(0, 0, ballCanvas.clientWidth, ballCanvas.clientHeight)
 
@@ -585,6 +611,7 @@ function updateBalls(time) {
         ball.x += ball.velocityX * deltaTime
         ball.y += ball.velocityY * deltaTime
         obstacles.forEach(({ rect, cornerRadius }) => bounceOnRectangle(ball, rect, cornerRadius))
+        escapeIfTrapped(ball, obstacles)
         bounceOnScreenEdges(ball)
         updateBallAngle(ball, deltaTime)
         drawBall(ball)
