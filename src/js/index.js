@@ -119,17 +119,32 @@ setLanguage(currentLanguage)
 
 let isSwitchingLanguage = false
 
-const SWING_DURATION = 1600
 const SWING_START_DELAY = 250
-const SWING_LETTER_DELAY = 8
 
 const swingCard = document.querySelector(".container-info")
 const swingTextElements = swingCard.querySelectorAll("h1, .subtitle, .container-info > p")
 const swingObjects = swingCard.querySelectorAll(".avatar, .container-button .button")
 let stopSwingTimeout
 
-function splitIntoLetters(element, firstDelay) {
-    let delay = firstDelay
+function hangOnString(element, lightness) {
+    const bounceDelay = SWING_START_DELAY + Math.random() * 150
+    const bounceDuration = 1100 + Math.random() * 900
+    element.style.setProperty("--swing-delay", `${bounceDelay}ms`)
+    element.style.setProperty("--swing-duration", `${bounceDuration}ms`)
+    element.style.setProperty("--swing-strength", (4 + Math.random() * 9) * lightness)
+
+    const swayDelay = SWING_START_DELAY + Math.random() * 250
+    const swayDuration = 1300 + Math.random() * 1000
+    const swaySide = Math.random() < 0.5 ? -1 : 1
+    element.style.setProperty("--sway-delay", `${swayDelay}ms`)
+    element.style.setProperty("--sway-duration", `${swayDuration}ms`)
+    element.style.setProperty("--sway-angle", swaySide * (3 + Math.random() * 5) * lightness)
+
+    return Math.max(bounceDelay + bounceDuration, swayDelay + swayDuration)
+}
+
+function splitIntoLetters(element) {
+    let lastEnd = 0
     const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT)
     const textNodes = []
     while (walker.nextNode()) textNodes.push(walker.currentNode)
@@ -148,17 +163,15 @@ function splitIntoLetters(element, firstDelay) {
                 const letter = document.createElement("span")
                 letter.className = "swing-letter"
                 letter.textContent = character
-                letter.style.setProperty("--swing-delay", `${delay}ms`)
-                letter.style.setProperty("--swing-angle", 10 + Math.random() * 8)
+                lastEnd = Math.max(lastEnd, hangOnString(letter, 1))
                 word.append(letter)
-                delay += SWING_LETTER_DELAY
             }
             fragment.append(word)
         })
         textNode.replaceWith(fragment)
     })
 
-    return delay
+    return lastEnd
 }
 
 function stopSwing() {
@@ -168,22 +181,21 @@ function stopSwing() {
     swingTextElements.forEach((element) => element.normalize())
 }
 
-function startSwing(startDelay = SWING_START_DELAY) {
+function startSwing(direction) {
     stopSwing()
 
-    let lastDelay = startDelay
-    swingTextElements.forEach((element, index) => {
-        lastDelay = Math.max(lastDelay, splitIntoLetters(element, startDelay + index * 60))
+    let lastEnd = 0
+    swingTextElements.forEach((element) => {
+        lastEnd = Math.max(lastEnd, splitIntoLetters(element))
+    })
+    swingObjects.forEach((object) => {
+        lastEnd = Math.max(lastEnd, hangOnString(object, 0.4))
     })
 
-    swingObjects.forEach((object, index) => {
-        object.style.setProperty("--swing-delay", `${startDelay + 80 + index * 70}ms`)
-        object.style.setProperty("--swing-angle", 5 + Math.random() * 3)
-    })
-
-    swingCard.style.setProperty("--lift-delay", `${startDelay}ms`)
+    swingCard.style.setProperty("--lift-delay", `${SWING_START_DELAY}ms`)
+    swingCard.style.setProperty("--swing-direction", direction)
     swingCard.classList.add("is-swinging")
-    stopSwingTimeout = setTimeout(stopSwing, lastDelay + SWING_DURATION + 400)
+    stopSwingTimeout = setTimeout(stopSwing, lastEnd + 400)
 }
 
 buttonLanguage.addEventListener("click", async () => {
@@ -209,7 +221,7 @@ buttonLanguage.addEventListener("click", async () => {
     await slideOut.finished
 
     setLanguage(currentLanguage)
-    startSwing()
+    startSwing(direction)
 
     const slideIn = homeSection.animate(
         [{ transform: `translateY(${-direction * 100}vh)` }, { transform: "translateY(0)" }],
@@ -230,7 +242,7 @@ async function playEntrance() {
         [{ transform: "translateY(-100vh)" }, { transform: "translateY(0)" }],
         { duration: 400, easing: "ease-out" }
     )
-    startSwing()
+    startSwing(1)
 
     await entrance.ready
     document.documentElement.classList.remove("is-entering")

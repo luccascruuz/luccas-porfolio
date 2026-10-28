@@ -57,7 +57,6 @@ h3 {
     box-shadow: 3px 3px 6px #000;
 }
 
-/* Fixed behind the content, the ball bounces on the screen edges, the card and the flag */
 .background-ball {
     position: fixed;
     z-index: -1;
@@ -141,10 +140,7 @@ h3 {
     animation: flag-wave 1s ease-in-out infinite;
 }
 
-/*
- * Dialog: retro window zoom (outline animated in JS from the button to the window),
- * then the window fades in and its items appear one after another
- */
+
 .zoom-outline {
     position: fixed;
     z-index: 10;
@@ -153,7 +149,6 @@ h3 {
     pointer-events: none;
 }
 
-/* Invisible while the outlines are zooming */
 dialog.is-zooming,
 dialog.is-zooming::backdrop {
     opacity: 0;
@@ -222,7 +217,6 @@ dialog[open]:not(.is-zooming) .container-experience > div {
     overflow: hidden;
 }
 
-/* Before the entrance animation starts, the card waits above the screen */
 .is-entering .home-section {
     transform: translateY(-100vh);
 }
@@ -414,7 +408,9 @@ dialog[open]:not(.is-zooming) .container-experience > div {
 .is-swinging .avatar,
 .is-swinging .container-button .button {
     transform-origin: top center;
-    animation: swing 1.6s var(--swing-delay, 0ms) both;
+    animation:
+        swing var(--swing-duration, 1.6s) var(--swing-delay, 0ms) both,
+        sway var(--sway-duration, 1.6s) var(--sway-delay, 0ms) both;
 }
 
 .is-swinging h1,
@@ -427,35 +423,65 @@ dialog[open]:not(.is-zooming) .container-experience > div {
 
 @keyframes swing {
     0% {
-        rotate: 0deg;
+        translate: 0 0;
         scale: 1;
         animation-timing-function: ease-out;
     }
     12% {
-        rotate: calc(var(--swing-angle) * 1deg);
+        translate: 0 calc(var(--swing-strength) * var(--swing-direction, 1) * 1px);
         scale: 1.06;
         animation-timing-function: ease-in-out;
     }
     30% {
-        rotate: calc(var(--swing-angle) * -0.65deg);
+        translate: 0 calc(var(--swing-strength) * var(--swing-direction, 1) * -0.65px);
         animation-timing-function: ease-in-out;
     }
     48% {
-        rotate: calc(var(--swing-angle) * 0.4deg);
+        translate: 0 calc(var(--swing-strength) * var(--swing-direction, 1) * 0.4px);
         scale: 1.03;
         animation-timing-function: ease-in-out;
     }
     64% {
-        rotate: calc(var(--swing-angle) * -0.22deg);
+        translate: 0 calc(var(--swing-strength) * var(--swing-direction, 1) * -0.22px);
         animation-timing-function: ease-in-out;
     }
     80% {
-        rotate: calc(var(--swing-angle) * 0.1deg);
+        translate: 0 calc(var(--swing-strength) * var(--swing-direction, 1) * 0.1px);
+        animation-timing-function: ease-in-out;
+    }
+    100% {
+        translate: 0 0;
+        scale: 1;
+    }
+}
+
+@keyframes sway {
+    0% {
+        rotate: 0deg;
+        animation-timing-function: ease-out;
+    }
+    15% {
+        rotate: calc(var(--sway-angle) * 1deg);
+        animation-timing-function: ease-in-out;
+    }
+    35% {
+        rotate: calc(var(--sway-angle) * -0.6deg);
+        animation-timing-function: ease-in-out;
+    }
+    55% {
+        rotate: calc(var(--sway-angle) * 0.35deg);
+        animation-timing-function: ease-in-out;
+    }
+    72% {
+        rotate: calc(var(--sway-angle) * -0.18deg);
+        animation-timing-function: ease-in-out;
+    }
+    87% {
+        rotate: calc(var(--sway-angle) * 0.08deg);
         animation-timing-function: ease-in-out;
     }
     100% {
         rotate: 0deg;
-        scale: 1;
     }
 }
 
