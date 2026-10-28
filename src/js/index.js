@@ -579,8 +579,6 @@ function isOverlapping(ball, rect, cornerRadius) {
     return Math.hypot(ball.x - closestX, ball.y - closestY) < getBallRadius() + cornerRadius - 0.5
 }
 
-// A ball in a gap smaller than itself (between the flag and the card) is pushed back and forth forever,
-// so it escapes through the side of the narrowest obstacle
 function escapeIfTrapped(ball, obstacles) {
     const trappedIn = obstacles
         .filter(({ rect, cornerRadius }) => isOverlapping(ball, rect, cornerRadius))
@@ -617,7 +615,15 @@ function updateBalls(time) {
         drawBall(ball)
     })
 
-    requestAnimationFrame(updateBalls)
+    if (balls.length > 0) {
+        requestAnimationFrame(updateBalls)
+    } else {
+        lastBallTime = undefined
+    }
+}
+
+function removeAllBalls() {
+    balls.length = 0
 }
 
 function addBall(x, y) {
@@ -640,6 +646,7 @@ if (prefersReducedMotion()) {
 } else {
     resizeBallCanvas()
     window.addEventListener("resize", resizeBallCanvas)
+    matchMedia("(orientation: portrait)").addEventListener("change", removeAllBalls)
 
     document.addEventListener("click", (event) => {
         if (event.detail === 0 || event.target.closest("dialog")) return
