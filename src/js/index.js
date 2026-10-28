@@ -364,8 +364,8 @@ function printConsoleGreeting() {
 }
 printConsoleGreeting()
 
-const BALL_SPRITE_SIZE = 24 // The ball is drawn this small, pixel by pixel, and scaled up without smoothing
-const BALL_SPEED = 220 // Pixels per second
+const BALL_SPRITE_SIZE = 24
+const BALL_SPEED = 220 
 
 const ballCanvas = document.querySelector("#backgroundBall")
 const ballContext = ballCanvas.getContext("2d")
@@ -389,8 +389,8 @@ function getBallRadius() {
 
 function resizeBallCanvas() {
     const ratio = window.devicePixelRatio || 1
-    ballCanvas.width = ballCanvas.clientWidth * ratio
-    ballCanvas.height = ballCanvas.clientHeight * ratio
+    ballCanvas.width = Math.round(ballCanvas.clientWidth * ratio)
+    ballCanvas.height = Math.round(ballCanvas.clientHeight * ratio)
     ballContext.setTransform(ratio, 0, 0, ratio, 0, 0)
     ballContext.imageSmoothingEnabled = false
     ballSize = ballCanvas.clientWidth < 600 ? 36 : 48
@@ -645,7 +645,7 @@ if (prefersReducedMotion()) {
     ballCanvas.hidden = true
 } else {
     resizeBallCanvas()
-    window.addEventListener("resize", resizeBallCanvas)
+    new ResizeObserver(resizeBallCanvas).observe(ballCanvas)
     matchMedia("(orientation: portrait)").addEventListener("change", removeAllBalls)
 
     document.addEventListener("click", (event) => {
