@@ -1,20 +1,20 @@
 * {
-    font-size: 16px;
-    font-family: monospace;
     box-sizing: border-box;
-    scroll-behavior: smooth;
 }
 
 body {
     margin: 0;
     padding: 0;
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100dvh;
     background: #ffd99b;
-    overflow: hidden;
+    font-family: monospace;
+    font-size: 16px;
 }
 
 dialog {
     border-radius: 1rem;
+    border: 4px solid #000;
     width: 50%;
 }
 
@@ -24,19 +24,191 @@ a {
 }
 
 h1 {
-    font-size: 32px;
+    font-size: 2rem;
+    margin: 0;
 }
 
-button {
+h2 {
+    font-size: 1.5rem;
+}
+
+h3 {
+    font-size: 1.15rem;
+}
+
+.button {
+    display: block;
     width: 100%;
+    padding: 0.25rem 0.5rem;
     border-radius: 0.2rem;
-    transition: all .2s ease;
+    border-bottom: 2px solid #000;
+    border-right: 2px solid #000;
+    border-top: 2px solid gray;
+    border-left: 2px solid gray;
+    background: #f0f0f0;
+    color: #000;
+    font: inherit;
     text-align: center;
+    transition: all .2s ease;
 }
 
-button:hover {
+.button:hover {
     cursor: pointer;
     box-shadow: 3px 3px 6px #000;
+}
+
+.button-language {
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.flag {
+    display: block;
+    width: 70px;
+    height: 50px;
+    transform-origin: bottom center;
+    animation:
+        hop-height 3s infinite,
+        hop-tilt 3s infinite;
+}
+
+
+@keyframes hop-height {
+    0%, 60% {
+        translate: 0 0;
+        animation-timing-function: cubic-bezier(.33, .66, .66, 1);
+    }
+    75% {
+        translate: 0 -10px;
+        animation-timing-function: cubic-bezier(.33, 0, .66, .33);
+    }
+    90%, 100% {
+        translate: 0 0;
+    }
+}
+
+@keyframes hop-tilt {
+    0%, 60% {
+        rotate: 0deg;
+        animation-timing-function: ease-out;
+    }
+    67.5% {
+        rotate: -8deg;
+        animation-timing-function: ease-in-out;
+    }
+    82.5% {
+        rotate: 8deg;
+        animation-timing-function: ease-in;
+    }
+    90%, 100% {
+        rotate: 0deg;
+    }
+}
+
+@keyframes flag-wave {
+    0%, 100% {
+        transform: none;
+    }
+    20% {
+        transform: rotate(-4deg) skewY(3deg);
+    }
+    45% {
+        transform: rotate(3deg) skewY(-2deg);
+    }
+    70% {
+        transform: rotate(-2deg) skewY(1deg);
+    }
+    85% {
+        transform: rotate(1deg);
+    }
+}
+
+.button-language:hover .flag,
+.button-language:focus-visible .flag {
+    transform-origin: left center;
+    animation: flag-wave 1s ease-in-out infinite;
+}
+
+/*
+ * Dialog: retro window zoom (outline animated in JS from the button to the window),
+ * then the window fades in and its items appear one after another
+ */
+.zoom-outline {
+    position: fixed;
+    z-index: 10;
+    border: 3px solid #000;
+    border-radius: 0.5rem;
+    pointer-events: none;
+}
+
+/* Invisible while the outlines are zooming */
+dialog.is-zooming,
+dialog.is-zooming::backdrop {
+    opacity: 0;
+}
+
+dialog[open]::backdrop {
+    background: rgba(0, 0, 0, .4);
+    backdrop-filter: blur(3px);
+}
+
+dialog[open]:not(.is-zooming) {
+    animation: dialog-fade-in .2s ease-out;
+}
+
+dialog[open]:not(.is-zooming)::backdrop {
+    animation: backdrop-fade-in .3s ease-out;
+}
+
+dialog[open].is-closing::backdrop {
+    animation: backdrop-fade-in .45s ease-in reverse forwards;
+}
+
+dialog[open]:not(.is-zooming) .container-projects > a,
+dialog[open]:not(.is-zooming) .container-experience > div {
+    animation: item-slide-in .4s cubic-bezier(.22, 1, .36, 1) backwards;
+    animation-delay: calc(var(--index, 0) * 70ms + 100ms);
+}
+
+@keyframes dialog-fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+
+@keyframes backdrop-fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes item-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    dialog[open]:not(.is-zooming),
+    dialog[open]:not(.is-zooming)::backdrop,
+    dialog[open]:not(.is-zooming) .container-projects > a,
+    dialog[open]:not(.is-zooming) .container-experience > div {
+        animation: none;
+    }
+
+    .flag,
+    .button-language:hover .flag,
+    .button-language:focus-visible .flag {
+        animation: none;
+    }
+}
+
+.is-switching-language {
+    overflow: hidden;
 }
 
 .home-section {
@@ -44,9 +216,9 @@ button:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    margin-top: -2rem;
-    padding: 0rem 1.5rem;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 1.5rem;
     gap: 1rem;
 }
 
@@ -55,10 +227,101 @@ button:hover {
     justify-content: center;
     align-items: center;
     gap: 3rem;
+    margin-bottom: 1.5rem;
 }
+
+.subtitle {
+    margin: 0.5rem 0 0;
+}
+
 .image-pixel-me {
+    display: block;
     width: 125px;
     height: 125px;
+}
+
+.avatar-wrapper {
+    position: relative;
+}
+
+.avatar {
+    position: relative;
+    display: block;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transform-origin: bottom center;
+}
+
+.avatar.is-hopping {
+    animation:
+        hop-height 3s -1.8s,
+        hop-tilt 3s -1.8s;
+}
+
+.avatar-pixel {
+    position: absolute;
+    left: calc(var(--x) * 100% / 22);
+    top: calc(var(--y) * 100% / 22);
+    width: calc(var(--width, 1) * 100% / 22);
+    height: calc(var(--height, 1) * 100% / 22);
+}
+
+.avatar-eye-cover {
+    background: #272410;
+}
+
+.avatar-eye {
+    background: #fff;
+}
+
+.avatar.is-blinking .avatar-eye {
+    visibility: hidden;
+}
+
+.speech-bubble {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    bottom: calc(100% + 14px);
+    width: max-content;
+    max-width: 220px;
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    border: 3px solid #000;
+    border-radius: 0.5rem;
+    background: #fff;
+    box-shadow: 3px 3px 0 #000;
+    transform-origin: bottom right;
+    animation: speech-bubble-pop .3s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.speech-bubble::after {
+    content: "";
+    position: absolute;
+    right: 28px;
+    bottom: -9px;
+    width: 12px;
+    height: 12px;
+    border-right: 3px solid #000;
+    border-bottom: 3px solid #000;
+    background: #fff;
+    transform: rotate(45deg);
+}
+
+@keyframes speech-bubble-pop {
+    from {
+        opacity: 0;
+        transform: scale(.6);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .avatar.is-hopping,
+    .speech-bubble {
+        animation: none;
+    }
 }
 
 .container-info {
@@ -72,40 +335,36 @@ button:hover {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
-
     margin-top: 1.5rem;
 }
 
-.container-button-close-modal-experience {
+.container-button-close {
     display: flex;
-    align-items: center;
     justify-content: right;
 }
-.button-close-modal-experience {
+
+.button-close {
     width: 2rem;
-    align-items: center;
 }
 
-.container-button-close-modal-projects {
-    display: flex;
-    align-items: center;
-    justify-content: right;
+.title-dialog {
+    text-align: center;
 }
-.button-close-modal-projects {
-    width: 2rem;
-    align-items: center;
-}
-
 
 .container-experience {
     padding: 1rem;
 }
 
-.title-experience {
-    text-align: center;
-}
 .title-company-experience:hover {
     text-decoration: underline;
+}
+
+.company-period {
+    font-weight: bold;
+}
+
+.company-description {
+    font-style: italic;
 }
 
 .container-projects {
@@ -113,17 +372,12 @@ button:hover {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
 }
-.description-project{
-    text-align: center;
-}
-.title-project-github {
-    text-align: center;
-}
+
 .project-github {
-    height: 100%;
     padding: 0.5rem;
     border-radius: 0.5rem;
     border: 2px solid #000;
+    text-align: center;
     transition: all .3s ease;
 }
 
@@ -131,32 +385,20 @@ button:hover {
     box-shadow: 6px 6px 9px #000;
 }
 
-.flag-from-brazil {
-    width: 70px;
-    height: 50px;
-}
-
-.flag-from-usa {
-    width: 70px;
-    height: 50px;
-}
-
 @media (max-width: 991px) {
-    button {
-        color: #000;
-        border-bottom: 2px solid #000;
-        border-right: 2px solid #000;
-        border-top: 2px solid gray;
-        border-left: 2px solid gray;
-    }
     dialog {
         width: 100%;
+    }
+
+    .container-title {
+        gap: 1.5rem;
     }
 
     .image-pixel-me {
         width: 75px;
         height: 75px;
     }
+
     .container-button {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -164,5 +406,4 @@ button:hover {
     .container-projects {
         grid-template-columns: 1fr;
     }
-
 }

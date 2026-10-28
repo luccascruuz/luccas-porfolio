@@ -1,72 +1,365 @@
-const buttonOpenModalExperience = document.querySelector('#buttonExperience')
-const buttonOpenModalExperiencePtBr = document.querySelector('#buttonExperiencePtBr')
-const dialogModalExperience = document.querySelector("#dialogModalExperience")
-const dialogModalExperiencePtBr = document.querySelector("#dialogModalExperiencePtBr")
-const buttonExperienceCloseX = document.querySelector("#buttonExperienceCloseX")
-const buttonExperiencePtBrCloseX = document.querySelector("#buttonExperiencePtBrCloseX")
+const translations = {
+    pt: {
+        avatarLabel: "Pixel art do Luccas. Clique pra dar oi",
+        skillsLabel: "Habilidades:",
+        educationLabel: "Educação:",
+        education: "Bacharel em Sistemas de Informação",
+        experiences: "Experiências",
+        projects: "Projetos",
+        close: "Fechar",
 
-const buttonOpenModalProjects = document.querySelector('#buttonPrjects')
-const buttonOpenModalProjectsPtBr = document.querySelector('#buttonPrjectsPtBr')
-const dialogModalProjects = document.querySelector("#dialogModalProjects")
-const dialogModalProjectsPtBr = document.querySelector("#dialogModalProjectsPtBr")
-const buttonProjectsCloseX = document.querySelector("#buttonProjectsCloseX")
-const buttonProjectsPtBrCloseX = document.querySelector("#buttonProjectsPtBrCloseX")
+        projectDashboard: "Um painel exibindo informações sobre a COVID-19 na cidade de Lagarto-SE, utilizando uma API também criada por mim para coletar esses dados. Construído em Next.js, os dados são apresentados em gráficos e indicadores e são atualizados diariamente.",
+        projectApi: "API com dados sobre casos de COVID-19 na cidade de Lagarto-SE, utilizando uma AWS Lambda para coletar os dados diariamente. Essa API alimenta o banco de dados MongoDB, e os dados necessários são filtrados para serem exibidos no painel.",
+        projectArtistry: "Bot do Telegram que gera imagens a partir de qualquer texto que o usuário envia, utilizando a API da OpenAI para criar as imagens e enviá-las pelo Telegram.",
+        projectCrud: "CRUD que gerencia dados de produtos em um banco de dados PostgreSQL, utilizando Java e Spring Boot, incluindo alguns exemplos de testes unitários nos controllers.",
+        projectSpiderManTitle: "Portfólio do Homem-Aranha",
+        projectSpiderMan: "Portfólio sobre o Homem-Aranha criado exclusivamente com HTML, CSS e JavaScript, demonstrando alguns efeitos que podemos criar usando apenas HTML e CSS, junto com algumas técnicas e padrões de JavaScript.",
+        projectCsvTitle: "Criador de CSV com informações sobre restaurantes na região",
+        projectCsv: "Este sistema gera um CSV com informações sobre restaurantes na região usando a API do Google Maps e cria uma mensagem utilizando a API da OpenAI para uma possível oportunidade de emprego.",
 
+        gmtechDate: "Mar/2026 – Atual",
+        gmtechDescription: "Desenvolvimento de produtos web e mobile; principal projeto: jogo educacional infantil usado em clínicas de psicologia e escolas.",
+        gmtech1: "Levei um jogo educacional infantil da web para Android com Capacitor, hoje usado em 3–4 clínicas infantis de psicologia e 1 escola que trabalham com tablets.",
+        gmtech2: "Implementei arquitetura offline-first, com armazenamento local no dispositivo e sincronização com o backend ao reconectar, garantindo uso em escolas com internet instável.",
+        gmtech3: "Redesenhei a estratégia de carregamento de mídias e assets, reduzindo o build em ~55% e deixando o carregamento quase 3 minutos mais rápido.",
+        gmtech4: "Criei testes E2E com Cypress e testes de componente com React Testing Library, executados no pipeline de CI no GitHub Actions.",
+        gmtech5: "Desenvolvi componentes reutilizáveis em React, Next.js e TypeScript integrados às APIs do produto.",
 
-window.addEventListener("click", (event) => {
-    if(event.target == dialogModalProjects || event.target == dialogModalExperience) {
-        dialogModalProjects.close()
-        dialogModalExperience.close()
-    }
-})
-window.addEventListener("click", (event) => {
-    if(event.target == dialogModalProjectsPtBr || event.target == dialogModalExperiencePtBr) {
-        dialogModalProjectsPtBr.close()
-        dialogModalExperiencePtBr.close()
-    }
-})
+        stoneDate: "Mar/2022 – Mar/2026",
+        stoneDescription: "Fintech de pagamentos. Plataforma web para parceiros (lojistas) gerenciarem maquininhas e antecipação de recebíveis.",
+        stone1: "Construí o fluxo web de antecipação de recebíveis nas modalidades diária, D+1 e D+0, usado por 10–15 mil parceiros e responsável por ~R$ 2 milhões/semana em transações via web.",
+        stone2: "Levei a antecipação pontual do app para a web; o novo canal passou a responder por ~15% das antecipações pontuais.",
+        stone3: "Elevei a cobertura de testes unitários (Jest) dos fluxos financeiros críticos de 15% para 100%, reduzindo o risco de regressões em produção.",
+        stone4: "Desenvolvi os fluxos de gestão de maquininhas (solicitação de equipamentos, bobinas, suporte e acompanhamento de pedidos), reduzindo em 39% os chamados ao suporte.",
+        stone5: "Trabalhei na arquitetura de micro-frontends com Module Federation (Webpack) e migrei todas as ~17 telas da área de maquininhas para o novo Design System da Stone.",
+        stone6: "Instrumentei a jornada de antecipação com eventos de analytics (Amplitude), permitindo ao time de produto medir conversão por etapa do funil.",
+        stone7: "Implementei a geração de boletos de pagamento da Conta Stone em Go, mantive o painel legado em Angular (~2% dos usuários web) e investiguei incidentes em produção com Datadog.",
 
-buttonOpenModalExperience.addEventListener("click", () => {
-    if (typeof dialogModalExperience.showModal === 'function') {
-        dialogModalExperience.showModal()
+        queroDate: "Set/2020 – Fev/2022",
+        queroDescription: "Plataforma de delivery de comida. Painel de parceiros (restaurantes) e painel administrativo interno.",
+        quero1: "Desenvolvi e mantive o painel de pedidos dos parceiros em React, Next.js e TypeScript, usado por ~5 mil estabelecimentos.",
+        quero2: "Tornei o painel responsivo para a variedade de dispositivos dos estabelecimentos, mantendo ações críticas acessíveis em qualquer resolução.",
+        quero3: "Construí o painel administrativo interno usado por áreas como operações e prevenção a fraudes para consultar dados de parceiros sem acessar suas contas.",
+        quero4: "Mentorei um estagiário até a promoção a júnior, ensinando fundamentos de React, regras de negócio do produto e os padrões de code review da empresa.",
+        quero5: "Estruturei gerenciamento de estado com Redux e Context API e componentes reutilizáveis com Styled Components, com testes unitários em Jest.",
+
+        sergipetecTitle: "SergipeTec — Desenvolvedor de Software (Estágio)",
+        sergipetecDate: "Jul/2020 – Set/2020",
+        sergipetecDescription: "Modernização de sistemas da Secretaria de Estado da Fazenda de Sergipe (SEFAZ-SE).",
+        sergipetec1: "Recriei funcionalidades de um sistema legado em .NET numa nova arquitetura com Java e Spring Boot, desenvolvendo serviços e endpoints REST.",
+    },
+}
+
+const avatarMessages = {
+    en: [
+        "Hi! 👋",
+        "1st place at the IFS Hackathon 🏆",
+        "Master's student in Computer Science at UFS 🎓",
+        "I took a kids' educational game from the web to Android 📱",
+        "I built a flow that handles ~R$ 2 million a week 💸",
+        "That's all for now. Let's talk on LinkedIn? 😉",
+    ],
+    pt: [
+        "Oi! 👋",
+        "1º lugar no Hackathon do IFS 🏆",
+        "Mestrando em Ciência da Computação na UFS 🎓",
+        "Levei um jogo educacional infantil da web pro Android 📱",
+        "Construí um fluxo que movimenta ~R$ 2 milhões por semana 💸",
+        "Por enquanto é isso. Bora conversar no LinkedIn? 😉",
+    ],
+}
+
+const homeSection = document.querySelector(".home-section")
+const buttonLanguage = document.querySelector("#buttonLanguage")
+const flagLanguage = document.querySelector("#flagLanguage")
+const speechBubble = document.querySelector("#speechBubble")
+const textElements = document.querySelectorAll("[data-i18n]")
+const ariaLabelElements = document.querySelectorAll("[data-i18n-aria-label]")
+
+textElements.forEach((element) => (element.dataset.en = element.textContent))
+ariaLabelElements.forEach((element) => (element.dataset.enAriaLabel = element.ariaLabel))
+
+function setLanguage(language) {
+    const texts = translations[language] || {}
+
+    textElements.forEach((element) => {
+        element.textContent = texts[element.dataset.i18n] || element.dataset.en
+    })
+    ariaLabelElements.forEach((element) => {
+        element.ariaLabel = texts[element.dataset.i18nAriaLabel] || element.dataset.enAriaLabel
+    })
+
+    document.documentElement.lang = language === "pt" ? "pt-BR" : "en"
+    if (language === "pt") {
+        flagLanguage.src = "src/image/Flag_of_the_United_States.svg.png"
+        flagLanguage.alt = "Switch to English"
     } else {
-        alert(
-            "The dialog HTML5 API is not supported by this browser. Please, update."
-        )
+        flagLanguage.src = "src/image/Flag_of_Brazil.svg.png"
+        flagLanguage.alt = "Mudar para português"
     }
-})
-buttonExperienceCloseX.addEventListener("click", () => dialogModalExperience.close())
 
-buttonOpenModalExperiencePtBr.addEventListener("click", () => {
-    if (typeof dialogModalExperiencePtBr.showModal === 'function') {
-        dialogModalExperiencePtBr.showModal()
-    } else {
-        alert(
-            "The dialog HTML5 API is not supported by this browser. Please, update."
-        )
+    speechBubble.hidden = true
+
+    try {
+        localStorage.setItem("language", language)
+    } catch {}
+}
+
+function getInitialLanguage() {
+    try {
+        const savedLanguage = localStorage.getItem("language")
+        if (savedLanguage) return savedLanguage
+    } catch {}
+
+    return navigator.language.startsWith("pt") ? "pt" : "en"
+}
+
+let currentLanguage = getInitialLanguage()
+setLanguage(currentLanguage)
+
+let isSwitchingLanguage = false
+
+buttonLanguage.addEventListener("click", async () => {
+    if (isSwitchingLanguage) return
+
+    currentLanguage = currentLanguage === "pt" ? "en" : "pt"
+
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        setLanguage(currentLanguage)
+        return
     }
+
+    isSwitchingLanguage = true
+    document.documentElement.classList.add("is-switching-language")
+
+    const direction = currentLanguage === "pt" ? -1 : 1
+
+    const slideOut = homeSection.animate(
+        [{ transform: "translateY(0)" }, { transform: `translateY(${direction * 100}vh)` }],
+        { duration: 400, easing: "ease-in", fill: "forwards" }
+    )
+    await slideOut.finished
+
+    setLanguage(currentLanguage)
+
+    const slideIn = homeSection.animate(
+        [{ transform: `translateY(${-direction * 100}vh)` }, { transform: "translateY(0)" }],
+        { duration: 400, easing: "ease-out" }
+    )
+    slideOut.cancel()
+    await slideIn.finished
+
+    document.documentElement.classList.remove("is-switching-language")
+    isSwitchingLanguage = false
 })
-buttonExperiencePtBrCloseX.addEventListener("click", () => dialogModalExperiencePtBr.close())
 
+const ZOOM_DURATION = 450
+const ZOOM_TRAIL_SIZE = 3
+const ZOOM_TRAIL_DELAY = 45
 
-buttonOpenModalProjects.addEventListener("click", () => {
-    if (typeof dialogModalProjects.showModal === 'function') {
-        dialogModalProjects.showModal()
-    } else {
-        alert(
-            "The dialog HTML5 API is not supported by this browser. Please, update."
+function prefersReducedMotion() {
+    return matchMedia("(prefers-reduced-motion: reduce)").matches
+}
+
+function playWindowZoom(fromRect, toRect) {
+    const toKeyframe = (rect) => ({
+        left: `${rect.left}px`,
+        top: `${rect.top}px`,
+        width: `${rect.width}px`,
+        height: `${rect.height}px`,
+    })
+    let leadAnimation
+
+    for (let index = 0; index < ZOOM_TRAIL_SIZE; index++) {
+        const opacity = 1 - index * 0.3
+        const outline = document.createElement("div")
+        outline.className = "zoom-outline"
+        document.body.append(outline)
+
+        const animation = outline.animate(
+            [
+                { ...toKeyframe(fromRect), opacity: 0 },
+                { opacity, offset: 0.15 },
+                { opacity, offset: 0.8 },
+                { ...toKeyframe(toRect), opacity: 0 },
+            ],
+            {
+                duration: ZOOM_DURATION,
+                delay: index * ZOOM_TRAIL_DELAY,
+                easing: "cubic-bezier(.65, 0, .35, 1)",
+                fill: "backwards",
+            }
         )
-    }
-})
-buttonProjectsCloseX.addEventListener("click", () => dialogModalProjects.close())
+        animation.finished.then(() => outline.remove())
 
-buttonOpenModalProjectsPtBr.addEventListener("click", () => {
-    if (typeof dialogModalProjectsPtBr.showModal === 'function') {
-        dialogModalProjectsPtBr.showModal()
-    } else {
-        alert(
-            "The dialog HTML5 API is not supported by this browser. Please, update."
-        )
+        if (index === 0) leadAnimation = animation
     }
+
+    return leadAnimation.finished
+}
+
+function getOpenerButton(dialog) {
+    return document.querySelector(`[data-open="${dialog.id}"]`)
+}
+
+document.querySelectorAll("[data-open]").forEach((button) => {
+    const dialog = document.querySelector(`#${button.dataset.open}`)
+
+    button.addEventListener("click", async () => {
+        if (prefersReducedMotion()) {
+            dialog.showModal()
+            return
+        }
+
+        dialog.classList.add("is-zooming")
+        dialog.showModal()
+        await playWindowZoom(button.getBoundingClientRect(), dialog.getBoundingClientRect())
+        dialog.classList.remove("is-zooming")
+    })
 })
-buttonProjectsPtBrCloseX.addEventListener("click", () => dialogModalProjectsPtBr.close())
+
+async function closeDialog(dialog) {
+    if (dialog.classList.contains("is-closing")) return
+
+    if (prefersReducedMotion()) {
+        dialog.close()
+        return
+    }
+
+    const dialogRect = dialog.getBoundingClientRect()
+    const buttonRect = getOpenerButton(dialog).getBoundingClientRect()
+    const translateX = buttonRect.left + buttonRect.width / 2 - (dialogRect.left + dialogRect.width / 2)
+    const translateY = buttonRect.top + buttonRect.height / 2 - (dialogRect.top + dialogRect.height / 2)
+    const scaleX = buttonRect.width / dialogRect.width
+    const scaleY = buttonRect.height / dialogRect.height
+
+    dialog.classList.add("is-closing")
+    await dialog.animate(
+        [
+            { transform: "none", opacity: 1 },
+            { opacity: 1, offset: 0.4 },
+            { transform: `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`, opacity: 0 },
+        ],
+        { duration: ZOOM_DURATION, easing: "cubic-bezier(.65, 0, .35, 1)" }
+    ).finished
+
+    dialog.classList.remove("is-closing")
+    dialog.close()
+}
+
+document.querySelectorAll("dialog").forEach((dialog) => {
+    dialog.querySelectorAll(".container-projects > a, .container-experience > div").forEach((item, index) => {
+        item.style.setProperty("--index", index)
+    })
+
+    dialog.addEventListener("click", (event) => {
+        if (event.target === dialog) closeDialog(dialog)
+    })
+
+    dialog.querySelector("[data-close]").addEventListener("click", () => closeDialog(dialog))
+
+    dialog.addEventListener("cancel", (event) => {
+        event.preventDefault()
+        closeDialog(dialog)
+    })
+})
+
+const AVATAR_GRID_SIZE = 22
+const avatar = document.querySelector("#avatar")
+
+const avatarEyes = [
+    { element: document.querySelector("#avatarEyeLeft"), column: 7, row: 10 },
+    { element: document.querySelector("#avatarEyeRight"), column: 14, row: 10 },
+]
+
+function lookAt(pointerX, pointerY) {
+    const avatarRect = avatar.getBoundingClientRect()
+    const pixelSize = avatarRect.width / AVATAR_GRID_SIZE
+
+    avatarEyes.forEach(({ element, column, row }) => {
+        const distanceX = pointerX - (avatarRect.left + (column + 0.5) * pixelSize)
+        const distanceY = pointerY - (avatarRect.top + (row + 0.5) * pixelSize)
+        const distance = Math.hypot(distanceX, distanceY) || 1
+        const strength = Math.min(1, distance / 150)
+
+        element.style.setProperty("--x", column + Math.round((distanceX / distance) * 2 * strength))
+        element.style.setProperty("--y", row + Math.round((distanceY / distance) * strength))
+    })
+}
+
+let lookAtFrame
+window.addEventListener("pointermove", (event) => {
+    cancelAnimationFrame(lookAtFrame)
+    lookAtFrame = requestAnimationFrame(() => lookAt(event.clientX, event.clientY))
+})
+
+function scheduleBlink() {
+    setTimeout(() => {
+        avatar.classList.add("is-blinking")
+        setTimeout(() => {
+            avatar.classList.remove("is-blinking")
+            scheduleBlink()
+        }, 150)
+    }, 3000 + Math.random() * 3000)
+}
+scheduleBlink()
+
+let avatarMessageIndex = 0
+let hideSpeechBubbleTimeout
+
+avatar.addEventListener("click", () => {
+    const messages = avatarMessages[currentLanguage] || avatarMessages.en
+    speechBubble.textContent = messages[avatarMessageIndex]
+    avatarMessageIndex = (avatarMessageIndex + 1) % messages.length
+
+    speechBubble.hidden = true
+    void speechBubble.offsetWidth
+    speechBubble.hidden = false
+
+    avatar.classList.remove("is-hopping")
+    void avatar.offsetWidth
+    avatar.classList.add("is-hopping")
+
+    clearTimeout(hideSpeechBubbleTimeout)
+    hideSpeechBubbleTimeout = setTimeout(() => (speechBubble.hidden = true), 4000)
+})
+
+avatar.addEventListener("animationend", () => avatar.classList.remove("is-hopping"))
+
+function printConsoleGreeting() {
+    const message = currentLanguage === "pt"
+        ? "Curioso com o código? Bora conversar → https://www.linkedin.com/in/luccas-ribeiro-cruz/"
+        : "Curious about the code? Let's talk → https://www.linkedin.com/in/luccas-ribeiro-cruz/"
+    const image = new Image()
+
+    image.addEventListener("load", () => {
+        try {
+            const canvas = document.createElement("canvas")
+            canvas.width = image.naturalWidth
+            canvas.height = image.naturalHeight
+            const context = canvas.getContext("2d")
+            context.drawImage(image, 0, 0)
+            const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data
+
+            let pixelArt = ""
+            const styles = []
+            for (let row = 0; row < AVATAR_GRID_SIZE; row++) {
+                for (let column = 0; column < AVATAR_GRID_SIZE; column++) {
+                    const x = Math.floor(((column + 0.5) * canvas.width) / AVATAR_GRID_SIZE)
+                    const y = Math.floor(((row + 0.5) * canvas.height) / AVATAR_GRID_SIZE)
+                    const index = (y * canvas.width + x) * 4
+                    pixelArt += "%c  "
+                    styles.push(`background: rgb(${pixels[index]}, ${pixels[index + 1]}, ${pixels[index + 2]}); line-height: 1`)
+                }
+                pixelArt += "\n"
+            }
+            console.log(pixelArt, ...styles)
+        } catch {
+        }
+
+        console.log(`%c${message}`, "font: bold 14px monospace")
+    })
+
+    image.src = "src/image/pixelArtMe.png"
+}
+printConsoleGreeting()
