@@ -119,9 +119,77 @@ setLanguage(currentLanguage)
 
 let isSwitchingLanguage = false
 
+const SWING_DURATION = 1600
+const SWING_START_DELAY = 250
+const SWING_LETTER_DELAY = 8
+
+const swingCard = document.querySelector(".container-info")
+const swingTextElements = swingCard.querySelectorAll("h1, .subtitle, .container-info > p")
+const swingObjects = swingCard.querySelectorAll(".avatar, .container-button .button")
+let stopSwingTimeout
+
+function splitIntoLetters(element, firstDelay) {
+    let delay = firstDelay
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT)
+    const textNodes = []
+    while (walker.nextNode()) textNodes.push(walker.currentNode)
+
+    textNodes.forEach((textNode) => {
+        const fragment = document.createDocumentFragment()
+        textNode.textContent.split(/(\s+)/).forEach((part) => {
+            if (!part.trim()) {
+                fragment.append(part)
+                return
+            }
+
+            const word = document.createElement("span")
+            word.className = "swing-word"
+            for (const character of part) {
+                const letter = document.createElement("span")
+                letter.className = "swing-letter"
+                letter.textContent = character
+                letter.style.setProperty("--swing-delay", `${delay}ms`)
+                letter.style.setProperty("--swing-angle", 10 + Math.random() * 8)
+                word.append(letter)
+                delay += SWING_LETTER_DELAY
+            }
+            fragment.append(word)
+        })
+        textNode.replaceWith(fragment)
+    })
+
+    return delay
+}
+
+function stopSwing() {
+    clearTimeout(stopSwingTimeout)
+    swingCard.classList.remove("is-swinging")
+    swingCard.querySelectorAll(".swing-word").forEach((word) => word.replaceWith(word.textContent))
+    swingTextElements.forEach((element) => element.normalize())
+}
+
+function startSwing(startDelay = SWING_START_DELAY) {
+    stopSwing()
+
+    let lastDelay = startDelay
+    swingTextElements.forEach((element, index) => {
+        lastDelay = Math.max(lastDelay, splitIntoLetters(element, startDelay + index * 60))
+    })
+
+    swingObjects.forEach((object, index) => {
+        object.style.setProperty("--swing-delay", `${startDelay + 80 + index * 70}ms`)
+        object.style.setProperty("--swing-angle", 5 + Math.random() * 3)
+    })
+
+    swingCard.style.setProperty("--lift-delay", `${startDelay}ms`)
+    swingCard.classList.add("is-swinging")
+    stopSwingTimeout = setTimeout(stopSwing, lastDelay + SWING_DURATION + 400)
+}
+
 buttonLanguage.addEventListener("click", async () => {
     if (isSwitchingLanguage) return
 
+    stopSwing()
     currentLanguage = currentLanguage === "pt" ? "en" : "pt"
 
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -141,6 +209,7 @@ buttonLanguage.addEventListener("click", async () => {
     await slideOut.finished
 
     setLanguage(currentLanguage)
+    startSwing()
 
     const slideIn = homeSection.animate(
         [{ transform: `translateY(${-direction * 100}vh)` }, { transform: "translateY(0)" }],
@@ -152,6 +221,23 @@ buttonLanguage.addEventListener("click", async () => {
     document.documentElement.classList.remove("is-switching-language")
     isSwitchingLanguage = false
 })
+
+async function playEntrance() {
+    if (!document.documentElement.classList.contains("is-entering")) return
+
+    isSwitchingLanguage = true
+    const entrance = homeSection.animate(
+        [{ transform: "translateY(-100vh)" }, { transform: "translateY(0)" }],
+        { duration: 400, easing: "ease-out" }
+    )
+    startSwing()
+
+    await entrance.ready
+    document.documentElement.classList.remove("is-entering")
+    await entrance.finished
+    isSwitchingLanguage = false
+}
+playEntrance()
 
 const ZOOM_DURATION = 450
 const ZOOM_TRAIL_SIZE = 3

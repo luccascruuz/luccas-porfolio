@@ -217,8 +217,14 @@ dialog[open]:not(.is-zooming) .container-experience > div {
     }
 }
 
-.is-switching-language {
+.is-switching-language,
+.is-entering {
     overflow: hidden;
+}
+
+/* Before the entrance animation starts, the card waits above the screen */
+.is-entering .home-section {
+    transform: translateY(-100vh);
 }
 
 .home-section {
@@ -393,6 +399,79 @@ dialog[open]:not(.is-zooming) .container-experience > div {
 
 .project-github:hover {
     box-shadow: 6px 6px 9px #000;
+}
+
+.swing-word {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.swing-letter {
+    display: inline-block;
+}
+
+.is-swinging .swing-letter,
+.is-swinging .avatar,
+.is-swinging .container-button .button {
+    transform-origin: top center;
+    animation: swing 1.6s var(--swing-delay, 0ms) both;
+}
+
+.is-swinging h1,
+.is-swinging .subtitle,
+.is-swinging > p,
+.is-swinging .avatar-wrapper,
+.is-swinging .container-button {
+    animation: lift-off 2.2s var(--lift-delay, .25s) both;
+}
+
+@keyframes swing {
+    0% {
+        rotate: 0deg;
+        scale: 1;
+        animation-timing-function: ease-out;
+    }
+    12% {
+        rotate: calc(var(--swing-angle) * 1deg);
+        scale: 1.06;
+        animation-timing-function: ease-in-out;
+    }
+    30% {
+        rotate: calc(var(--swing-angle) * -0.65deg);
+        animation-timing-function: ease-in-out;
+    }
+    48% {
+        rotate: calc(var(--swing-angle) * 0.4deg);
+        scale: 1.03;
+        animation-timing-function: ease-in-out;
+    }
+    64% {
+        rotate: calc(var(--swing-angle) * -0.22deg);
+        animation-timing-function: ease-in-out;
+    }
+    80% {
+        rotate: calc(var(--swing-angle) * 0.1deg);
+        animation-timing-function: ease-in-out;
+    }
+    100% {
+        rotate: 0deg;
+        scale: 1;
+    }
+}
+
+@keyframes lift-off {
+    0% {
+        filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+    }
+    15% {
+        filter: drop-shadow(4px 10px 4px rgba(0, 0, 0, .35));
+    }
+    60% {
+        filter: drop-shadow(2px 5px 3px rgba(0, 0, 0, .2));
+    }
+    100% {
+        filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+    }
 }
 
 @media (max-width: 991px) {
