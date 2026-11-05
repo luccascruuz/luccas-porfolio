@@ -8,8 +8,8 @@ const translations = {
         projects: "Projetos",
         close: "Fechar",
 
-        projectDashboard: "Um painel exibindo informações sobre a COVID-19 na cidade de Lagarto-SE, utilizando uma API também criada por mim para coletar esses dados. Construído em Next.js, os dados são apresentados em gráficos e indicadores e são atualizados diariamente.",
-        projectApi: "API com dados sobre casos de COVID-19 na cidade de Lagarto-SE, utilizando uma AWS Lambda para coletar os dados diariamente. Essa API alimenta o banco de dados MongoDB, e os dados necessários são filtrados para serem exibidos no painel.",
+        projectDashboard: "Painel com os casos de síndrome respiratória aguda grave (SRAG) de moradores de Lagarto-SE de 2019 até hoje, comparando o período da pandemia de covid-19 com os anos seguintes. Construído em Next.js (ISR + SWR) sobre uma API também criada por mim, mostra linha do tempo semanal, indicadores, faixas etárias e vírus identificados em gráficos com Recharts, com tema claro/escuro, tabelas dos dados e exportação em CSV.",
+        projectApi: "API em Node.js, Express e TypeScript com os casos de SRAG de moradores de Lagarto-SE desde 2019, a partir dos microdados abertos do SIVEP-Gripe (OpenDataSUS). Um job diário no GitHub Actions baixa só os anos que mudaram, lê CSVs de até 1,8 GB em streaming e substitui cada ano no MongoDB numa transação. Hospedada na Vercel, oferece séries semanais com média móvel, comparação entre anos, documentação Swagger e página de status.",
         projectArtistry: "Bot do Telegram que gera imagens a partir de qualquer texto que o usuário envia, utilizando a API da OpenAI para criar as imagens e enviá-las pelo Telegram.",
         projectCrud: "CRUD que gerencia dados de produtos em um banco de dados PostgreSQL, utilizando Java e Spring Boot, incluindo alguns exemplos de testes unitários nos controllers.",
         projectSpiderManTitle: "Portfólio do Homem-Aranha",

@@ -68,17 +68,20 @@
             <a class="project-github" href="https://github.com/luccascruuz/dashboard-lagarto-covid" target="_blank"
                 rel="noopener">
                 <h3>Dashboard Lagarto Covid</h3>
-                <p data-i18n="projectDashboard">A dashboard displaying information about COVID-19 in the city of
-                    Lagarto-SE, using an API also created by me to collect the data. Built with Next.js, the data is
-                    presented in charts and indicators and is updated daily.</p>
+                <p data-i18n="projectDashboard">A dashboard of severe acute respiratory syndrome (SARS) cases among residents of
+                    Lagarto-SE from 2019 to today, comparing the COVID-19 pandemic with the following years. Built with
+                    Next.js (ISR + SWR) on top of an API also created by me, it shows weekly timelines, indicators, age
+                    groups and detected viruses in Recharts charts, with light/dark theme, data tables and CSV export.</p>
             </a>
 
             <a class="project-github" href="https://github.com/luccascruuz/APICovidLagartoSE" target="_blank"
                 rel="noopener">
                 <h3>API Covid Lagarto</h3>
-                <p data-i18n="projectApi">API with data about COVID-19 cases in the city of Lagarto-SE, using an AWS
-                    Lambda to collect the data daily. This API feeds the MongoDB database, and the necessary data is
-                    filtered to be displayed on the dashboard.</p>
+                <p data-i18n="projectApi">Node.js, Express and TypeScript API with SARS cases among residents of Lagarto-SE since
+                    2019, built from the Ministry of Health's open SIVEP-Gripe microdata (OpenDataSUS). A daily GitHub
+                    Actions job downloads only the years that changed, streams CSVs of up to 1.8 GB and replaces each
+                    year in MongoDB within a transaction. Hosted on Vercel, it offers weekly series with moving
+                    averages, year-over-year comparisons, Swagger docs and a status page.</p>
             </a>
 
             <a class="project-github" href="https://github.com/luccascruuz/artificial-artistry" target="_blank"
